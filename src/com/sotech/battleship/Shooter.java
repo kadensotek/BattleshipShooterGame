@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JFrame;
@@ -33,10 +34,10 @@ public class Shooter extends JFrame implements KeyListener
     public static boolean player1Down = false;
     public static boolean player2Up = false;
     public static boolean player2Down = false;
-    CopyOnWriteArrayList<Bullet> bullets = new CopyOnWriteArrayList<Bullet>();
+    List<Bullet> bullets = new CopyOnWriteArrayList<Bullet>();  /* thread safe */
 
     public Shooter()
-    {
+    {        
 //        shipExplosion = new SoundClip(audioPath + "FireExplosion.wav");
 //        backgroundNoise = new SoundClip(audioPath + "background1.wav");
 
@@ -52,6 +53,8 @@ public class Shooter extends JFrame implements KeyListener
         player1Sunk = new DestroyedShip(10, 0, 35, 100, graphicsPath + "ship1sunk.png");
         player2Sunk = new DestroyedShip(550, 0, 35, 100, graphicsPath + "ship2sunk.png");
 
+        displayRules();
+        
         setTitle("Battleship Shooter");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 420);
@@ -60,15 +63,13 @@ public class Shooter extends JFrame implements KeyListener
         addKeyListener(this);
         setVisible(true);
         
-        displayRules();
-        
 //        backgroundNoise.play();
     }
 
     private void displayRules()
     {
         Frame frame = new Frame();
-        JOptionPane.showMessageDialog(frame, "Player 1: W/S for movement and space to shot.\n" +
+        JOptionPane.showMessageDialog(frame, "Player 1: W/S for movement and space to shoot.\n" +
                                              "Player 2: Up/Down for movement and enter to shoot.");
     }
 
@@ -139,7 +140,6 @@ public class Shooter extends JFrame implements KeyListener
             {
                 player2Sunk.draw(g);
                 player2Sunk.update(this, playerNum);
-
             }
         }
     }
